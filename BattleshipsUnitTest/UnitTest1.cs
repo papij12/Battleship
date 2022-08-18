@@ -1,72 +1,94 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Battleship;
 
+
 namespace BattleshipsUnitTest
 {
     [TestClass]
     public class UnitTest1
     {
+        private Game g;
+        [TestInitialize]
+        public void Initialize()
+        {
+            g = new Game();
+        }
+
+        [TestCleanup]
+        public void cleanup()
+        {
+            g = null;
+        }
+        
         [TestMethod]
-        public void EmptyStringsShouldReturnZero()
+        public void TestGutterGame()
         {
 
-            Assert.AreEqual(0, Program.Add(""));
+
+            RollMany(20, 0);
+
+            Assert.AreEqual(0, g.Score());
         }
 
         [TestMethod]
-        public void OneStringsShouldReturnTheString()
+        public void TestAllOnes()
         {
-
-            Assert.AreEqual(20, Program.Add("20"));
+            RollMany(20, 1);
+            Assert.AreEqual(20, g.Score());
         }
-        [TestMethod]
-        public void TwoStringsShouldReturnTheSumOfTheStrings()
-        {
 
-            Assert.AreEqual(4, Program.Add("2,2"));
+
+
+        [TestMethod]
+        public void TestOneSpare()
+        {
+            RollSpare();
+            g.Roll(3);
+            RollMany(17, 0);
+
+            Assert.AreEqual(16, g.Score());
+           
         }
-        [TestMethod]
-        public void MoreThanTwoStringsShouldReturnTheSumOfTheStrings()
-        {
 
-            Assert.AreEqual(16, Program.Add("3,4,1,8"));
+
+        [TestMethod]
+        public void TestOneStrike()
+        {
+            RollStrike();
+            g.Roll(3);
+            g.Roll(4);
+            RollMany(16, 0);
+
+            Assert.AreEqual(24, g.Score());
         }
-        [TestMethod]
-        public void AMoreThanOneDigitStringsShouldReturnTheSumOfTheStrings()
-        {
 
-            Assert.AreEqual(38, Program.Add("11,27"));
+        [TestMethod]
+        public void TestPerFectGame()
+        {
+            RollMany(12, 10);
+            Assert.AreEqual(300, g.Score());
         }
-        [TestMethod]
-        public void NegativeStringsShouldBeIgnored()
-        {
 
-            Assert.AreEqual(14, Program.Add("11,-27,3"));
+        private void RollStrike()
+        {
+            g.Roll(10);
         }
-        [TestMethod]
-        public void NumbersGreaterThanOneThousandShouldBeIgnored()
-        {
 
-            Assert.AreEqual(11, Program.Add("11,1001"));
+        private void RollSpare()
+        {
+            g.Roll(5);
+            g.Roll(5);
         }
-        [TestMethod]
-        public void DifferentDelimitersShouldBeIgnored()
-        {
 
-            Assert.AreEqual(17, Program.Add("!3!4!10"));
-        }
-        [TestMethod]
-        public void TheLengthOfTheDelimitersShouldBeIgnored()
+        private void RollMany(int rolls, int pins)
         {
+            for (int i = 0; i < rolls; i++)
+            {
+                g.Roll(pins);
 
-            Assert.AreEqual(17, Program.Add("!!!3!!!4!!!10"));
-        }
-        [TestMethod]
-        public void AllTypeOfDelimitersShouldBeIgnored()
-        {
-
-            Assert.AreEqual(17, Program.Add("![*]3![*]4![*]10"));
+            }
         }
     }
+
 }
     
