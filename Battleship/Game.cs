@@ -1,68 +1,171 @@
 ﻿
-
+using System;
 namespace Battleship
 {
     public class Game
     {
-      
-        private int[] rolls = new int[21];
-        private int currentRoll;
-        public void Roll(int pins)
+       
+        Random cordinates = new Random();
+        Char[,] grid = new char[10, 10];
+        int BattleshipHits = 0;
+        int Miss = 0;
+        int DestroyerHits = 0;
+        public void GamePlay()
         {
-            rolls[currentRoll++] = pins;
+
+            int x = 0;
+            int y = 0;
             
-        }
 
-        public int Score()
-        {
-            int score =0;
-            int roll = 0;
 
-            for (int frame = 0; frame < 10; frame++)
+            try
             {
-
-                if (IsStrike(roll)) 
+               
+                int input;
+                Console.WriteLine("Enter X");
+                string line = Console.ReadLine();
+                input = Int32.Parse(line);
+            
+                x = input;
+                
+                Console.WriteLine("Enter Y");
+                line = Console.ReadLine();
+                input = Int32.Parse(line);
+                    y = input;
+                
+            
+                if (grid[x,y] == 'B')
                 {
-                    score += 10 +StrikeBonus(roll);
-                    roll++;
+                    IsHitShot(x, y);
+                    Console.Clear();
+                    Console.WriteLine("Hit!\r\n");
+                    BattleshipHits++;
                 }
-
-               else if (IsSpare(roll))
+                else if (grid[x, y] == 'D')
                 {
-                    score += 10 + SpareBonus(roll);
-                    roll += 2;
+                    IsHitShot(x, y);
+                    Console.Clear();
+                    Console.WriteLine("Hit!\r\n");
+                    DestroyerHits++;
                 }
                 else
                 {
-                    score += SumOfBallsInFrame(roll);
-                    roll += 2;
+                    IsMissShot(x, y);
+                    Console.Clear();
+                    Console.WriteLine("Miss!\r\n");
+                    Miss++;
                 }
- 
             }
+            catch
 
-            return score;
+            {
+                Console.Clear();
+                Console.WriteLine("Error: Please enter numbers between 0 and 9.");
+            }
+            if (BattleshipHitCount() == 5)
+            {
+                Console.WriteLine("Buttleship sunk");
+               
+            }
+            if (DestroyerHitCount() == 4)
+            {
+                Console.WriteLine("Destroyer sunk");
+                
+            }
+            Console.ReadKey();
+            Console.Clear();
         }
 
-        private bool IsStrike(int roll)
+       
+
+        public void PutBattleship()
         {
-            return rolls[roll] == 10;
+            int x = cordinates.Next(5);
+            int y = cordinates.Next(5);
+            int count = 0;
+                while (count < 5)
+                {
+                    SetBattleship(x, y);
+                    x++;
+                    count++;
+                }
         }
 
-        private int SumOfBallsInFrame(int roll)
+        public void PutDestroyers()
         {
-            return rolls[roll] + rolls[roll + 1];
+            for (int i = 0; i < 2; i++)
+            {
+                int x = cordinates.Next(5);
+                int y = cordinates.Next(5);
+                int count = 0;
+                while (count < 4)
+                {
+                    SetDestroyers(x, y);
+                    y++;
+                    count++;
+                }
+            }
         }
-        private int SpareBonus(int roll)
+       
+
+        public char SetBattleship(int x, int y)
         {
-            return rolls[roll + 2];
+            // this line should be deleted.
+            Console.WriteLine("Battleship:"+x+","+y);
+            return grid[x, y] = 'B';
         }
-        private int StrikeBonus(int roll)
+        public char SetDestroyers(int x, int y)
         {
-            return rolls[roll + 1] + rolls[roll+2];
+            //this line should be deleted
+            Console.WriteLine("Destroyers:" + x + "," + y);
+
+            return grid[x, y] = 'D';
         }
-        private bool IsSpare(int roll)
+        public char IsHitShot(int x, int y)
         {
-            return rolls[roll] + rolls[roll + 1] == 10;
+            return grid[x, y] = 'H';
+        }
+
+        public char IsMissShot(int x, int y)
+        {
+            return grid[x, y] = 'M';
+        }
+        private int BattleshipHitCount()
+        {
+            return BattleshipHits;
+        }
+        private int DestroyerHitCount()
+        {
+            return DestroyerHits;
+        }
+        public int HitsCount()
+        {
+            return BattleshipHits + DestroyerHits;
+        }
+        public int MissCount()
+        {
+            return Miss;
+        }
+
+        public void DisplayGrid()
+        {
+            Console.WriteLine(" |0 1 2 3 4 5 6 7 8 9");
+            Console.WriteLine(" +__________");
+            for (int i = 0; i < 10; i++)
+            {
+                Console.Write(i + "|");
+                for (int J = 0; J < 10; J++)
+                {
+           
+                        Console.Write(grid[J, i] + ".");
+             
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
+
+ 
+
+     
