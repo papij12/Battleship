@@ -4,12 +4,13 @@ namespace Battleship
 {
     public class Game
     {
-       
+        Program p = new Program();
         Random cordinates = new Random();
         Char[,] grid = new char[10, 10];
         int BattleshipHits = 0;
         int Miss = 0;
         int DestroyerHits = 0;
+       
         public void GamePlay()
         {
 
@@ -22,13 +23,13 @@ namespace Battleship
             {
                
                 int input;
-                Console.WriteLine("Enter X");
+                Console.WriteLine("Enter X Cordinate");
                 string line = Console.ReadLine();
                 input = Int32.Parse(line);
             
                 x = input;
                 
-                Console.WriteLine("Enter Y");
+                Console.WriteLine("Enter Y cordinate");
                 line = Console.ReadLine();
                 input = Int32.Parse(line);
                     y = input;
@@ -81,7 +82,7 @@ namespace Battleship
         public void PutBattleship()
         {
             int x = cordinates.Next(5);
-            int y = cordinates.Next(5);
+            int y = cordinates.Next(4);
             int count = 0;
                 while (count < 5)
                 {
@@ -89,35 +90,35 @@ namespace Battleship
                     x++;
                     count++;
                 }
+            
         }
 
         public void PutDestroyers()
         {
-            for (int i = 0; i < 2; i++)
-            {
-                int x = cordinates.Next(5);
-                int y = cordinates.Next(5);
+                int x = cordinates.Next(4);
+                int y = cordinates.Next(5,6);
+                int i = cordinates.Next(5,9);
+                int j = cordinates.Next(5, 6);
                 int count = 0;
                 while (count < 4)
                 {
                     SetDestroyers(x, y);
+                    SetDestroyers(i, j);
                     y++;
+                    j++;
                     count++;
                 }
-            }
+            
         }
-       
+      
 
         public char SetBattleship(int x, int y)
         {
-            // this line should be deleted.
-            Console.WriteLine("Battleship:"+x+","+y);
             return grid[x, y] = 'B';
         }
         public char SetDestroyers(int x, int y)
         {
-            //this line should be deleted
-            Console.WriteLine("Destroyers:" + x + "," + y);
+         
 
             return grid[x, y] = 'D';
         }
@@ -128,7 +129,20 @@ namespace Battleship
 
         public char IsMissShot(int x, int y)
         {
+            if (grid[x,y] == 'H')
+            {
+                return 'H';
+            }
             return grid[x, y] = 'M';
+        }
+      
+        public int HitsCount()
+        {
+            return BattleshipHits + DestroyerHits;
+        }
+        public int MissCount()
+        {
+            return Miss;
         }
         private int BattleshipHitCount()
         {
@@ -137,14 +151,6 @@ namespace Battleship
         private int DestroyerHitCount()
         {
             return DestroyerHits;
-        }
-        public int HitsCount()
-        {
-            return BattleshipHits + DestroyerHits;
-        }
-        public int MissCount()
-        {
-            return Miss;
         }
 
         public void DisplayGrid()
