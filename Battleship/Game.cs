@@ -4,7 +4,6 @@ namespace Battleship
 {
     public class Game
     {
-        Program p = new Program();
         Random cordinates = new Random();
         Char[,] grid = new char[10, 10];
         int BattleshipHits = 0;
@@ -16,10 +15,7 @@ namespace Battleship
 
             int x = 0;
             int y = 0;
-            
-
-
-            try
+        try
             {
                
                 int input;
