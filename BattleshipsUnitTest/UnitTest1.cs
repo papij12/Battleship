@@ -11,8 +11,7 @@ namespace BattleshipsUnitTest
         int x = 0;
         int y = 0;
         private Game g;
-       
-
+   
         [TestInitialize]
         public void InitializeTheGame()
         {

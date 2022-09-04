@@ -13,11 +13,11 @@ namespace Battleship
         public void GamePlay()
         {
 
-            int x = 0;
-            int y = 0;
+            
         try
             {
-               
+                int x = 0;
+                int y = 0;
                 int input;
                 Console.WriteLine("Enter X Cordinate");
                 string line = Console.ReadLine();
@@ -114,8 +114,7 @@ namespace Battleship
         }
         public char SetDestroyers(int x, int y)
         {
-         
-
+        
             return grid[x, y] = 'D';
         }
         public char IsHitShot(int x, int y)

@@ -11,12 +11,12 @@ namespace Battleship
             Game g = new Game();
             Program p = new Program();
             
-                g.PutBattleship();
-                g.PutDestroyers();
-                Console.WriteLine("BATTLSHIP 1");
-                Console.WriteLine("-----------\n");
-                p.BoardOfTheGame();
-
+            g.PutBattleship();
+            g.PutDestroyers();
+            Console.WriteLine("BATTLSHIP 1");
+            Console.WriteLine("-----------\n");
+            p.BoardOfTheGame();
+   
             while (g.HitsCount() < 13)
                 {
                     g.GamePlay();
@@ -28,9 +28,6 @@ namespace Battleship
 
                 g.DisplayGrid();
                 Console.ReadLine();
-      
-                Console.WriteLine("See ya!!");
-        
           
         }
         private void BoardOfTheGame()
